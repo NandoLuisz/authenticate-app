@@ -1,6 +1,7 @@
 "use client"
 
 import { userFetch } from "@/axios/config"
+import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FaGithub } from "react-icons/fa"
@@ -75,17 +76,7 @@ export default function Register(){
           onSubmit={handleSubmit(onSubmit)}>
             <div className="rounded px-6 py-6 flex flex-col gap-4">
               <h1 className="text-3xl font-bold">Registro</h1>
-              <p>Digite seus dados abaixo</p>
-              <div className="w-full flex flex-col gap-2">
-                <div className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
-                  <FcGoogle className="size-6"/> 
-                  <span className="font-semibold">Criar com Google</span>
-                </div>
-                <div className="w-full flex justify-center items-center gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
-                  <FaGithub className="size-6"/> 
-                  <span className="font-semibold">Criar com GitHub</span>
-                </div>
-              </div>
+              <p className="mb-20">Digite seus dados abaixo</p>
               <div className="w-full flex flex-col gap-6">
                 <div className="`w-full flex flex-col gap-2">
                     <span className="font-semibold">Usuário</span>

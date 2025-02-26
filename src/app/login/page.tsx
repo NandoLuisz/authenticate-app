@@ -1,5 +1,6 @@
 "use client"
 
+import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FaGithub } from "react-icons/fa"
@@ -44,13 +45,14 @@ export default function Login(){
                     className="w-full flex justify-center items-center 
                                gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
                     <FcGoogle className="size-6"/> 
-                    <span className="font-semibold">Criar com Google</span>
+                    <span className="font-semibold"
+                        onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>Entrar com Google</span>
                   </div>
                   <div 
                     className="w-full flex justify-center items-center 
                                gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
                     <FaGithub className="size-6"/> 
-                    <span className="font-semibold">Criar com GitHub</span>
+                    <span className="font-semibold">Entrar com GitHub</span>
                   </div>
                 </div>
                 <div className="w-full flex flex-col gap-6">
