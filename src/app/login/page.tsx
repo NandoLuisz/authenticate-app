@@ -1,11 +1,14 @@
 "use client"
 
+import { userFetch } from "@/axios/config"
 import { signIn } from "next-auth/react"
 import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FaGithub } from "react-icons/fa"
 import { FcGoogle } from "react-icons/fc"
 import { z } from "zod"
+import { saveToken } from "../actions"
+import { useRouter } from 'next/navigation'
 
 const userLoginFormSchema = z.object({
     username: z.string().min(3).max(20),
@@ -22,12 +25,30 @@ export default function Login(){
       formState: { errors, isSubmitting } 
     } = useForm<LoginFormFields>()
 
+    const router = useRouter()
+
     const onSubmit: SubmitHandler<LoginFormFields> = async (data) => {
         const result  = userLoginFormSchema.safeParse(data)
         if(!result.success) return console.log("credenciais erradas")
     
         const { username, password } = data
-        console.log(username, password)
+        const userLogin = {
+          username,
+          password
+        }
+
+        try {
+          const response = await userFetch.post("auth/login", JSON.stringify(userLogin))
+          if(response.status === 200){
+            console.log("Usuário logado com sucesso!")
+            const token = response.data.token
+            saveToken(token)
+            router.push("/dashboard")
+          } 
+        } catch (error: any) {
+          console.log(error)
+        }
+
     }
 
     return (

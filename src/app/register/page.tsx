@@ -1,12 +1,21 @@
+// {
+//   "username": "mara",
+//   "email": "mara@gmail.com",
+//   "password": "123",
+//   "auth_provider": "LOCAL",
+//   "role": "ADMIN"
+// }
+
 "use client"
 
 import { userFetch } from "@/axios/config"
 import { signIn } from "next-auth/react"
-import Link from "next/link"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { FaGithub } from "react-icons/fa"
 import { FcGoogle } from "react-icons/fc"
 import { z } from "zod"
+
+import Link from "next/link"
 
 const userRegisterFormSchema = z.object({
     username: z.string().min(3).max(20),
@@ -36,7 +45,7 @@ export default function Register(){
 
     const { username, email, password } = data
     const role  = "ADMIN"
-    const user = {
+    const userRegister = {
       username,
       password,
       email,
@@ -44,7 +53,7 @@ export default function Register(){
     }
 
     try {
-      const response = await userFetch.post("auth/register", JSON.stringify(user))
+      const response = await userFetch.post("auth/register", JSON.stringify(userRegister))
       if(response.status === 200) console.log("Usuário cadastrado com sucesso!")
       reset()      
     } catch (error: any) {
@@ -59,16 +68,14 @@ export default function Register(){
         } else {
           setError("root", { message: "Erro inesperado ao registrar o usuário." });
         }
-
       } else {
         console.error("Erro desconhecido:", error);
         setError("root", { message: "Erro de conexão com o servidor." });
       }
     }
   }
-  
     return (
-        <div className="w-full h-screen bg-white flex justify-center items-center">
+    <div className="w-full h-screen bg-white flex justify-center items-center">
       <div className="w-[75%] h-[95vh] flex bg-white px-2 py-2 rounded-lg justify-between shadow-2xl">
       <img src="/background_singIn_3.jpeg" width={680} height={500} alt="Astronauta" className="rounded-lg"/>
         <form 
@@ -76,7 +83,22 @@ export default function Register(){
           onSubmit={handleSubmit(onSubmit)}>
             <div className="rounded px-6 py-6 flex flex-col gap-4">
               <h1 className="text-3xl font-bold">Registro</h1>
-              <p className="mb-20">Digite seus dados abaixo</p>
+              <p>Digite seus dados abaixo</p>
+               <div className="w-full flex flex-col gap-2">
+                  <div 
+                    className="w-full flex justify-center items-center 
+                                gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
+                    <FcGoogle className="size-6"/> 
+                    <span className="font-semibold"
+                        onClick={() => signIn("google", { callbackUrl: "/dashboard" })}>Registrar com Google</span>
+                  </div>
+                  <div 
+                    className="w-full flex justify-center items-center 
+                                gap-4 bg-zinc-100 py-2 rounded-md cursor-pointer">
+                    <FaGithub className="size-6"/> 
+                    <span className="font-semibold">Registrar com GitHub</span>
+                  </div>
+              </div>
               <div className="w-full flex flex-col gap-6">
                 <div className="`w-full flex flex-col gap-2">
                     <span className="font-semibold">Usuário</span>
